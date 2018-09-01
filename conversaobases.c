@@ -2,10 +2,15 @@
 
 #include<stdio.h>
 #include<windows.h>
+
 void sair();
 void hideCursor();
 void showCursor();
 void gotoxy(int x, int y);
+void converteBinario();
+void binarioParaDecimal(char binario[]);
+void binarioParaOctal(char binario[]);
+void binarioParaHexa(char binario[]);
 void converteDecimal();
 void decimalParaBinario(int decimal);
 void decimalParaOctal(int decimal);
@@ -36,6 +41,205 @@ void showCursor(){
 
 void gotoxy(int x,int y){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){x,y}); //posiciona cursor na tela
+}
+
+void converteBinario(){
+	char tecla;
+	char bin[50];
+	int a;
+	int verifica;
+	system("cls");
+	showCursor();
+	gotoxy(35,3);printf("CONVERSOR DE BASES - BINARIO");
+	do{
+		verifica = 1;
+		gotoxy(10,6);printf("Digite o numero a ser convertido: ");
+		fflush(stdin);
+		scanf("%s",&bin);
+		
+		for(a=0;bin[a]!='\0';a++){
+			if(bin[a] != '0' && bin[a] != '1'){
+				verifica=0; // não é binário
+			}
+		}
+		
+		if(verifica==0){
+			gotoxy(44,6);printf("                                       ");
+			gotoxy(30,25);printf("Este numero nao eh binario!");
+		}
+	}while(verifica != 1);
+	gotoxy(30,25);printf("                           ");
+	binarioParaDecimal(bin);
+	binarioParaOctal(bin);
+	binarioParaHexa(bin);
+	hideCursor();
+	gotoxy(10,20);printf("<ESC> Voltar ao menu principal");
+	tecla = getch();
+	while(tecla!=27){
+		tecla = getch();
+	}
+	if(tecla == 27)
+		menu();
+}
+
+void binarioParaDecimal(char binario[]){
+	int a = 0;
+	int dec = 0;
+	int pot = 1;
+	
+	strrev(binario);
+		
+	while(binario[a] != '\0'){
+		if(binario[a] == '1'){
+			dec+=(1*pot);	
+		}
+		a++;
+		pot*=2;
+	}
+	gotoxy(10,10);printf("Decimal: %d",dec);
+}
+
+void binarioParaOctal(char binario[]){
+	int a = 0, b = 0, c = 0, oct = 0, pot = 1, qtdePedacos = 1, tamanho = strlen(binario);
+	char parte[4], octal[50];
+	strcpy(octal,"");
+	if(tamanho>=3){
+		while(tamanho >= 3){
+			tamanho-=3;
+			qtdePedacos++;
+		}	
+	}else{
+		qtdePedacos = 1;
+	}
+	for(a=1;a<=qtdePedacos;a++){
+		parte[0] = binario[b];
+		parte[1] = binario[b+1];
+		parte[2] = binario[b+2];
+		
+		while(parte[c]!='\0'){
+			if(parte[c] == '1'){
+				oct+=(1*pot);
+			}
+			c++;
+			pot*=2;
+		}
+
+		switch(oct){
+			case 0:
+				strcat(octal,"0");
+				break;
+			case 1:
+				strcat(octal,"1");
+				break;
+			case 2:
+				strcat(octal,"2");
+				break;
+			case 3:
+				strcat(octal,"3");
+				break;
+			case 4:
+				strcat(octal,"4");
+				break;
+			case 5:
+				strcat(octal,"5");
+				break;
+			case 6:
+				strcat(octal,"6");
+				break;
+			case 7:
+				strcat(octal,"7");
+				break;
+		}
+		oct = 0;
+		c = 0;
+		pot = 1;
+		b+=3;
+	}
+	gotoxy(10,12);printf("Octal: %s",strrev(octal));
+}
+
+void binarioParaHexa(char binario[]){
+	int a = 0, b = 0, c = 0, hex = 0, pot = 1, qtdePedacos = 1, tamanho = strlen(binario);
+	char parte[5], hexa[50];
+	strcpy(hexa,"");
+	if(tamanho>=4){
+		while(tamanho >= 4){
+			tamanho-=4;
+			qtdePedacos++;
+		}	
+	}else{
+		qtdePedacos = 1;
+	}
+	for(a=1;a<=qtdePedacos;a++){
+		parte[0] = binario[b];
+		parte[1] = binario[b+1];
+		parte[2] = binario[b+2];
+		parte[3] = binario[b+3];
+
+		while(parte[c]!='\0'){
+			if(parte[c] == '1'){
+				hex+=(1*pot);
+			}
+			c++;
+			pot*=2;
+		}
+		
+		switch(hex){
+			case 0:
+				strcat(hexa,"0");
+				break;
+			case 1:
+				strcat(hexa,"1");
+				break;
+			case 2:
+				strcat(hexa,"2");
+				break;
+			case 3:
+				strcat(hexa,"3");
+				break;
+			case 4:
+				strcat(hexa,"4");
+				break;
+			case 5:
+				strcat(hexa,"5");
+				break;
+			case 6:
+				strcat(hexa,"6");
+				break;
+			case 7:
+				strcat(hexa,"7");
+				break;
+			case 8:
+				strcat(hexa,"8");
+				break;
+			case 9:
+				strcat(hexa,"9");
+				break;
+			case 10:
+				strcat(hexa,"A");
+				break;
+			case 11:
+				strcat(hexa,"B");
+				break;
+			case 12:
+				strcat(hexa,"C");
+				break;
+			case 13:
+				strcat(hexa,"D");
+				break;
+			case 14:
+				strcat(hexa,"E");
+				break;
+			case 15:
+				strcat(hexa,"F");
+				break;
+		}
+		hex = 0;
+		c = 0;
+		pot = 1;
+		b+=4;
+	}
+	gotoxy(10,14);printf("Hexadecimal: %s",strrev(hexa));
 }
 
 void converteDecimal(){
@@ -218,7 +422,7 @@ void menu(){
 		if(tecla == 13){
 			switch(cont){
 				case 2:
-					//converteBinario();
+					converteBinario();
 					break;
 				case 4:
 					converteDecimal();
