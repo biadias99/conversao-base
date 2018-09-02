@@ -15,6 +15,13 @@ void converteDecimal();
 void decimalParaBinario(int decimal);
 void decimalParaOctal(int decimal);
 void decimalParaHexa(int decimal);
+void converteOctal();
+void octalParaBinario(char octal[]);
+void octalParaDecimal(char octal[]);
+void octalParaHexa(char octal[]);
+void hexaParaDecimal(char octal[]);
+void converteHexa();
+void hexaParaBinario(char hexa[]);
 void menu();
 void ajuda();
 void sobre();
@@ -389,6 +396,288 @@ void decimalParaHexa(int decimal){
 	gotoxy(10,14);printf("Hexadecimal: %s",strrev(hex));
 }
 
+void converteOctal(){
+	char tecla;
+	char oct[50];
+	int a;
+	int verifica;
+	system("cls");
+	showCursor();
+	gotoxy(35,3);printf("CONVERSOR DE BASES - OCTAL");
+	do{
+		verifica = 1;
+		gotoxy(10,6);printf("Digite o numero a ser convertido: ");
+		fflush(stdin);
+		scanf("%s",&oct);
+		
+		for(a=0;oct[a]!='\0';a++){
+			if(oct[a] != '0' && oct[a] != '1' && oct[a] != '2' && oct[a] != '3' &&
+			oct[a] != '4' && oct[a] != '5' && oct[a] != '6' && oct[a] != '7'){
+				verifica=0; // não é octal
+			}
+		}
+		
+		if(verifica==0){
+			gotoxy(44,6);printf("                                       ");
+			gotoxy(30,25);printf("Este numero nao eh octal!");
+		}
+	}while(verifica != 1);
+	gotoxy(30,25);printf("                           ");
+	octalParaBinario(oct);
+	octalParaDecimal(oct);
+	octalParaHexa(oct);
+	hideCursor();
+	gotoxy(10,20);printf("<ESC> Voltar ao menu principal");
+	tecla = getch();
+	while(tecla!=27){
+		tecla = getch();
+	}
+	if(tecla == 27)
+		menu();
+}
+
+void octalParaBinario(char octal[]){
+	int a = 0, tamanho = strlen(octal);
+	char bin[50];
+	
+	strcpy(bin,"");
+	
+	for(a=0;a<tamanho;a++){
+		switch(octal[a]){
+			case '0':
+				strcat(bin,"000");
+				break;
+			case '1':
+				strcat(bin,"001");
+				break;
+			case '2':
+				strcat(bin,"010");
+				break;
+			case '3':
+				strcat(bin,"011");
+				break;
+			case '4':
+				strcat(bin,"100");
+				break;
+			case '5':
+				strcat(bin,"101");
+				break;
+			case '6':
+				strcat(bin,"110");
+				break;
+			case '7':
+				strcat(bin,"111");
+				break;
+		}
+	}
+	gotoxy(10,10);printf("Binario: %s",bin);
+}
+
+void octalParaDecimal(char octal[]){
+	int a = 0, tamanho = strlen(octal);
+	int dec = 0;
+	int pot = 1;
+	strrev(octal);
+	for(a=0;a<tamanho;a++){
+		switch(octal[a]){
+			case '0':
+				dec+=(0*pot);
+				break;
+			case '1':
+				dec+=(1*pot);
+				break;
+			case '2':
+				dec+=(2*pot);
+				break;
+			case '3':
+				dec+=(3*pot);
+				break;
+			case '4':
+				dec+=(4*pot);
+				break;
+			case '5':
+				dec+=(5*pot);
+				break;
+			case '6':
+				dec+=(6*pot);
+				break;
+			case '7':
+				dec+=(7*pot);
+				break;
+		}
+		pot*=8;
+	}
+	gotoxy(10,12);printf("Decimal: %d",dec);
+}
+
+void octalParaHexa(char octal[]){
+	
+}
+
+void converteHexa(){
+	char tecla;
+	char hex[50];
+	int a;
+	int verifica;
+	system("cls");
+	showCursor();
+	gotoxy(35,3);printf("CONVERSOR DE BASES - HEXA");
+	do{
+		verifica = 1;
+		gotoxy(10,6);printf("Digite o numero a ser convertido: ");
+		fflush(stdin);
+		scanf("%s",&hex);
+		
+		for(a=0;hex[a]!='\0';a++){
+			if(hex[a] != '0' && hex[a] != '1' && hex[a] != '2' && hex[a] != '3' &&
+			hex[a] != '4' && hex[a] != '5' && hex[a] != '6' && hex[a] != '7' &&
+			hex[a] != '8' && hex[a] != '9' && toupper(hex[a]) != 'A' && toupper(hex[a]) != 'B' &&
+			toupper(hex[a]) != 'C' && toupper(hex[a]) != 'D' && toupper(hex[a]) != 'E' && toupper(hex[a]) != 'F'			
+			){
+				verifica=0; // não é hexa
+			}
+		}
+		
+		if(verifica==0){
+			gotoxy(44,6);printf("                                       ");
+			gotoxy(30,25);printf("Este numero nao eh hexadecimal!");
+		}
+	}while(verifica != 1);
+	gotoxy(30,25);printf("                                 ");
+	hexaParaBinario(hex);
+	hexaParaDecimal(hex);
+	hideCursor();
+	gotoxy(10,20);printf("<ESC> Voltar ao menu principal");
+	tecla = getch();
+	while(tecla!=27){
+		tecla = getch();
+	}
+	if(tecla == 27)
+		menu();
+}
+
+void hexaParaBinario(char hexa[]){
+	int a = 0, tamanho = strlen(hexa);
+	char bin[50];
+	
+	strcpy(bin,"");
+	
+	for(a=0;a<tamanho;a++){
+		switch(toupper(hexa[a])){
+			case '0':
+				strcat(bin,"0000");
+				break;
+			case '1':
+				strcat(bin,"0001");
+				break;
+			case '2':
+				strcat(bin,"0010");
+				break;
+			case '3':
+				strcat(bin,"0011");
+				break;
+			case '4':
+				strcat(bin,"0100");
+				break;
+			case '5':
+				strcat(bin,"0101");
+				break;
+			case '6':
+				strcat(bin,"0110");
+				break;
+			case '7':
+				strcat(bin,"0111");
+				break;
+			case '8':
+				strcat(bin,"1000");
+				break;
+			case '9':
+				strcat(bin,"1001");
+				break;
+			case 'A':
+				strcat(bin,"1010");
+				break;
+			case 'B':
+				strcat(bin,"1011");
+				break;
+			case 'C':
+				strcat(bin,"1100");
+				break;
+			case 'D':
+				strcat(bin,"1101");
+				break;
+			case 'E':
+				strcat(bin,"1110");
+				break;
+			case 'F':
+				strcat(bin,"1111");
+				break;
+		}
+	}
+	gotoxy(10,10);printf("Binario: %s",bin);
+}
+
+void hexaParaDecimal(char hexa[]){
+	int a = 0, tamanho = strlen(hexa);
+	int dec = 0;
+	int pot = 1;
+	strrev(hexa);
+	for(a=0;a<tamanho;a++){
+		switch(toupper(hexa[a])){
+			case '0':
+				dec+=(0*pot);
+				break;
+			case '1':
+				dec+=(1*pot);
+				break;
+			case '2':
+				dec+=(2*pot);
+				break;
+			case '3':
+				dec+=(3*pot);
+				break;
+			case '4':
+				dec+=(4*pot);
+				break;
+			case '5':
+				dec+=(5*pot);
+				break;
+			case '6':
+				dec+=(6*pot);
+				break;
+			case '7':
+				dec+=(7*pot);
+				break;
+			case '8':
+				dec+=(8*pot);
+				break;
+			case '9':
+				dec+=(9*pot);
+				break;
+			case 'A':
+				dec+=(10*pot);
+				break;
+			case 'B':
+				dec+=(11*pot);
+				break;
+			case 'C':
+				dec+=(12*pot);
+				break;
+			case 'D':
+				dec+=(13*pot);
+				break;
+			case 'E':
+				dec+=(14*pot);
+				break;
+			case 'F':
+				dec+=(15*pot);
+				break;
+		}
+		pot*=16;
+	}
+	gotoxy(10,12);printf("Decimal: %d",dec);
+}
+
 void menu(){
 	system("cls");
 	int tecla;
@@ -428,10 +717,10 @@ void menu(){
 					converteDecimal();
 					break;
 				case 6:
-					//matrizTransposta(matriz);
+					converteOctal();
 					break;
 				case 8:
-					//menuSistemaLinear(matriz);
+					converteHexa();
 					break;
 				case 10:
 					sobre();
