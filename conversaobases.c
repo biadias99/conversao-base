@@ -1,7 +1,15 @@
-// Tamanho máximo do binário -> 50 caracteres
+/*	Trabalho feito por Bianca Dias Barbosa - BSI 2018
+
+Programa utilizado: DEV-C++ 5.11
+Sistema operacional rodado: Windows 10 Home Single Language
+Tamanho máximo definido: 50 caracteres
+
+Profª Juliana - Fundamentos da Computação
+*/
 
 #include<stdio.h>
 #include<windows.h>
+#include<strings.h>
 
 void sair();
 void hideCursor();
@@ -16,12 +24,13 @@ void decimalParaBinario(int decimal);
 void decimalParaOctal(int decimal);
 void decimalParaHexa(int decimal);
 void converteOctal();
-void octalParaBinario(char octal[]);
+void octalParaBinario(char octal[], char aux[]);
 void octalParaDecimal(char octal[]);
 void octalParaHexa(char octal[]);
-void hexaParaDecimal(char octal[]);
 void converteHexa();
-void hexaParaBinario(char hexa[]);
+void hexaParaBinario(char hexa[], char aux[]);
+void hexaParaDecimal(char octal[]);
+void hexaParaOctal(char hexa[]);
 void menu();
 void ajuda();
 void sobre();
@@ -122,7 +131,6 @@ void binarioParaOctal(char binario[]){
 		parte[0] = binario[b];
 		parte[1] = binario[b+1];
 		parte[2] = binario[b+2];
-		
 		while(parte[c]!='\0'){
 			if(parte[c] == '1'){
 				oct+=(1*pot);
@@ -182,7 +190,6 @@ void binarioParaHexa(char binario[]){
 		parte[1] = binario[b+1];
 		parte[2] = binario[b+2];
 		parte[3] = binario[b+3];
-
 		while(parte[c]!='\0'){
 			if(parte[c] == '1'){
 				hex+=(1*pot);
@@ -190,7 +197,6 @@ void binarioParaHexa(char binario[]){
 			c++;
 			pot*=2;
 		}
-		
 		switch(hex){
 			case 0:
 				strcat(hexa,"0");
@@ -399,6 +405,7 @@ void decimalParaHexa(int decimal){
 void converteOctal(){
 	char tecla;
 	char oct[50];
+	char aux[50];
 	int a;
 	int verifica;
 	system("cls");
@@ -423,7 +430,7 @@ void converteOctal(){
 		}
 	}while(verifica != 1);
 	gotoxy(30,25);printf("                           ");
-	octalParaBinario(oct);
+	octalParaBinario(oct, aux);
 	octalParaDecimal(oct);
 	octalParaHexa(oct);
 	hideCursor();
@@ -436,13 +443,13 @@ void converteOctal(){
 		menu();
 }
 
-void octalParaBinario(char octal[]){
+void octalParaBinario(char octal[], char aux[]){
 	int a = 0, tamanho = strlen(octal);
 	char bin[50];
 	
 	strcpy(bin,"");
 	
-	for(a=0;a<tamanho;a++){
+	for(a=tamanho;a>=0;a--){
 		switch(octal[a]){
 			case '0':
 				strcat(bin,"000");
@@ -470,6 +477,7 @@ void octalParaBinario(char octal[]){
 				break;
 		}
 	}
+	strcpy(aux,bin);
 	gotoxy(10,10);printf("Binario: %s",bin);
 }
 
@@ -511,12 +519,16 @@ void octalParaDecimal(char octal[]){
 }
 
 void octalParaHexa(char octal[]){
-	
+	char aux[50];
+	octalParaBinario(octal, aux);
+	strrev(aux);
+	binarioParaHexa(aux);
 }
 
 void converteHexa(){
 	char tecla;
 	char hex[50];
+	char aux[50];
 	int a;
 	int verifica;
 	system("cls");
@@ -544,8 +556,9 @@ void converteHexa(){
 		}
 	}while(verifica != 1);
 	gotoxy(30,25);printf("                                 ");
-	hexaParaBinario(hex);
+	hexaParaBinario(hex, aux);
 	hexaParaDecimal(hex);
+	hexaParaOctal(hex);
 	hideCursor();
 	gotoxy(10,20);printf("<ESC> Voltar ao menu principal");
 	tecla = getch();
@@ -556,13 +569,13 @@ void converteHexa(){
 		menu();
 }
 
-void hexaParaBinario(char hexa[]){
+void hexaParaBinario(char hexa[], char aux[]){
 	int a = 0, tamanho = strlen(hexa);
 	char bin[50];
 	
 	strcpy(bin,"");
 	
-	for(a=0;a<tamanho;a++){
+	for(a=tamanho;a>=0;a--){
 		switch(toupper(hexa[a])){
 			case '0':
 				strcat(bin,"0000");
@@ -614,6 +627,9 @@ void hexaParaBinario(char hexa[]){
 				break;
 		}
 	}
+	
+	strcpy(aux, bin);
+	
 	gotoxy(10,10);printf("Binario: %s",bin);
 }
 
@@ -675,7 +691,14 @@ void hexaParaDecimal(char hexa[]){
 		}
 		pot*=16;
 	}
-	gotoxy(10,12);printf("Decimal: %d",dec);
+	gotoxy(10,14);printf("Decimal: %d",dec);
+}
+
+void hexaParaOctal(char hexa[]){
+	char aux[50];
+	hexaParaBinario(hexa, aux);
+	strrev(aux);
+	binarioParaOctal(aux);
 }
 
 void menu(){
